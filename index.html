@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Guia do Gestor · Administração de Materiais e Patrimônio</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: system-ui, 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+      background-color: #f4f7fc;
+      color: #1e2a3e;
+      line-height: 1.5;
+      scroll-behavior: smooth;
+    }
+
+    :root {
+      --primary: rgb(39, 98, 141);
+      --primary-dark: #1e4a6e;
+      --primary-light: #e6f0f7;
+      --gray-light: #f0f2f5;
+      --gray-border: #dce3e9;
+      --shadow-sm: 0 4px 10px rgba(0, 0, 0, 0.03), 0 1px 2px rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 8px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    .header {
+      background: white;
+      border-bottom: 4px solid var(--primary);
+      box-shadow: var(--shadow-sm);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 1rem 1.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .brand-img {
+      width: 58px;
+      height: 58px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 2px solid var(--primary);
+      background: white;
+    }
+
+    .brand-text h1 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--primary);
+      letter-spacing: -0.3px;
+    }
+
+    .brand-text p {
+      font-size: 0.85rem;
+      color: #2c3e4e;
+      font-weight: 500;
+    }
+
+    .contact-whatsapp a {
+      background: #25D366;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0.6rem 1.2rem;
+      border-radius: 40px;
+      color: white;
+      font-weight: 600;
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: 0.2s;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .contact-whatsapp a:hover {
+      background: #128C7E;
+      transform: scale(1.02);
+    }
+
+    .nav-summary {
+      background: white;
+      border-bottom: 1px solid var(--gray-border);
+      position: sticky;
+      top: 94px;
+      z-index: 99;
+      backdrop-filter: blur(2px);
+    }
+
+    .nav-scroll {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0.8rem 1.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem 1rem;
+      justify-content: center;
+    }
+
+    .nav-scroll a {
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--primary-dark);
+      background: var(--primary-light);
+      padding: 0.3rem 0.9rem;
+      border-radius: 30px;
+      transition: all 0.2s;
+      white-space: nowrap;
+      letter-spacing: -0.2px;
+    }
+
+    .nav-scroll a:hover {
+      background: var(--primary);
+      color: white;
+      transform: translateY(-1px);
+    }
+
+    .container {
+      max-width: 1280px;
+      margin: 2rem auto;
+      padding: 0 1.5rem;
+    }
+
+    .section-card {
+      background: white;
+      border-radius: 24px;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 2.5rem;
+      overflow: hidden;
+      transition: all 0.2s ease;
+      border: 1px solid var(--gray-border);
+    }
+
+    .section-card:hover {
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
+    }
+
+    .section-header {
+      background: var(--primary-light);
+      padding: 1.2rem 1.8rem;
+      border-left: 6px solid var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .section-header h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary-dark);
+      letter-spacing: -0.3px;
+    }
+
+    .section-header .heading-marker {
+      width: 6px;
+      height: 28px;
+      background-color: var(--primary);
+      border-radius: 3px;
+      display: inline-block;
+    }
+
+    .section-content {
+      padding: 1.5rem 1.8rem;
+    }
+
+    .section-content p {
+      margin-bottom: 1rem;
+      font-size: 1rem;
+      color: #1f2c38;
+    }
+
+    .section-content h3 {
+      font-size: 1.25rem;
+      margin: 1.2rem 0 0.6rem 0;
+      color: var(--primary);
+      font-weight: 600;
+      border-left: 3px solid var(--primary);
+      padding-left: 0.75rem;
+    }
+
+    .section-content h4 {
+      font-weight: 600;
+      margin: 1rem 0 0.3rem;
+      color: #2c5282;
+      letter-spacing: -0.2px;
+    }
+
+    .grid-cols-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.2rem;
+      margin: 1rem 0;
+    }
+
+    .info-box {
+      background: var(--gray-light);
+      padding: 1rem 1.2rem;
+      border-radius: 20px;
+      border-left: 4px solid var(--primary);
+      transition: all 0.2s;
+    }
+
+    .info-box:hover {
+      background: #e9edf2;
+      transform: translateX(2px);
+    }
+
+    .badge {
+      background: var(--primary);
+      color: white;
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 0.2rem 0.6rem;
+      border-radius: 20px;
+      display: inline-block;
+      margin-bottom: 0.6rem;
+      letter-spacing: 0.3px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+      font-size: 0.9rem;
+    }
+
+    th, td {
+      border: 1px solid var(--gray-border);
+      padding: 0.7rem;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: var(--primary-light);
+      font-weight: 600;
+    }
+
+    ul, ol {
+      margin: 0.8rem 0 1rem 1.2rem;
+    }
+
+    li {
+      margin: 0.4rem 0;
+      position: relative;
+      list-style-type: none;
+      padding-left: 1.2rem;
+    }
+
+    li::before {
+      content: "—";
+      color: var(--primary);
+      font-weight: bold;
+      position: absolute;
+      left: 0;
+    }
+
+    hr {
+      margin: 1rem 0;
+      border: 0;
+      height: 1px;
+      background: var(--gray-border);
+    }
+
+    .glossary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .glossary-term {
+      background: var(--gray-light);
+      border-radius: 16px;
+      padding: 0.8rem 1rem;
+      border-bottom: 2px solid var(--primary);
+    }
+
+    .glossary-term strong {
+      color: var(--primary-dark);
+      font-size: 0.95rem;
+      display: block;
+      margin-bottom: 0.25rem;
+    }
+
+    .glossary-term p {
+      font-size: 0.85rem;
+      margin-bottom: 0;
+      color: #2d3e50;
+    }
+
+    .back-to-top {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background-color: var(--primary);
+      color: white;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      font-size: 1.3rem;
+      font-weight: 500;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+      z-index: 1000;
+      border: none;
+      cursor: pointer;
+    }
+
+    .back-to-top.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .back-to-top:hover {
+      background-color: var(--primary-dark);
+      transform: translateY(-4px);
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2);
+    }
+
+    .footer {
+      background: #0f2b36;
+      color: #cbd5e1;
+      text-align: center;
+      padding: 1.5rem;
+      margin-top: 2rem;
+      font-size: 0.85rem;
+    }
+
+    .footer a {
+      color: #90cdf4;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .footer a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 700px) {
+      .header-container {
+        flex-direction: column;
+        text-align: center;
+      }
+      .nav-scroll {
+        overflow-x: auto;
+        justify-content: flex-start;
+        flex-wrap: nowrap;
+        padding-bottom: 0.5rem;
+      }
+      .section-header h2 {
+        font-size: 1.3rem;
+      }
+      .section-content {
+        padding: 1.2rem;
+      }
+      .back-to-top {
+        width: 42px;
+        height: 42px;
+        font-size: 1.1rem;
+        bottom: 1.2rem;
+        right: 1.2rem;
+      }
+      .glossary-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-container">
+    <div class="brand">
+      <img class="brand-img" src="Gestão_SG.png" alt="Silvanio Gois" onerror="this.src='https://placehold.co/58x58?text=SG'">
+      <div class="brand-text">
+        <h1>Gestão de Materiais e Patrimônio</h1>
+        <p>Guia estratégico para tomada de decisão · Silvanio Gois</p>
+      </div>
+    </div>
+    <div class="contact-whatsapp">
+      <a href="https://wa.me/5513988301094" target="_blank" rel="noopener noreferrer">
+        Contato
+      </a>
+    </div>
+  </div>
+</header>
+
+<div class="nav-summary">
+  <div class="nav-scroll">
+    <a href="#conceitos">Fundamentos</a>
+    <a href="#atividades">Atividades</a>
+    <a href="#patrimonio">Patrimônio</a>
+    <a href="#supply">Supply & Sustentab.</a>
+    <a href="#demanda">Demanda</a>
+    <a href="#compras">Compras</a>
+    <a href="#estoques">Estoques</a>
+    <a href="#kpis">KPIs</a>
+    <a href="#ferramentas">Ferramentas</a>
+    <a href="#riscos">Riscos</a>
+    <a href="#pessoas">Liderança</a>
+    <a href="#integração">Integração</a>
+    <a href="#tecnologia">Tecnologia</a>
+    <a href="#primeiros100">100 dias</a>
+    <a href="#checklist">Checklists</a>
+    <a href="#glossario">Glossário</a>
+  </div>
+</div>
+
+<main class="container">
+  <!-- 1. Fundamentos -->
+  <div id="conceitos" class="section-card">
+    <div class="section-header"><div class="heading-marker"></div><h2>1. Fundamentos da Administração de Materiais</h2></div>
+    <div class="section-content">
+      <p><strong>Premissa central:</strong> garantir material certo, quantidade certa, momento exato e menor custo total. Mais de 50% do custo de um produto está associado à compra, armazenagem e movimentação.</p>
+      <div class="grid-cols-2">
+        <div class="info-box"><div class="badge">VISÃO ESTRATÉGICA</div><p>A gestão de materiais deixou de ser centro de custo para ser centro de resultado. Comprar antes do tempo gera estoque ocioso; depois provoca paralisação.</p></div>
+        <div class="info-box"><div class="badge">IMPACTO DIRETO</div><p>Produtividade e vantagem competitiva nascem da eficiência na cadeia de suprimentos. Estoques equilibrados liberam capital de giro.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Atividades essenciais -->
+  <div id="atividades" class="section-card">
+    <div class="section-header"><div class="heading-marker"></div><h2>2. Atividades essenciais</h2></div>
+    <div class="section-content">
+      <ul><li>Cadastramento, padronização e codificação de materiais</li><li>Gerenciamento de estoques (planejamento de necessidades)</li><li>Obtenção de materiais (compras, cadastro de fornecedores, follow-up)</li><li>Guarda, preservação e distribuição</li><li>Inventário e acurácia</li></ul>
+      <p>Compras, almoxarifado, PCP e transportes devem atuar integrados. A falta de alinhamento gera ruptura ou excesso.</p>
+    </div>
+  </div>
+
+  <!-- 3. Patrimônio -->
+  <div id="patrimonio" class="section-card">
+    <div class="section-header"><div class="heading-marker"></div><h2>3. Administração de bens patrimoniais</h2></div>
+    <div class="section-content">
+      <p>Bens tangíveis (prédios, máquinas, veículos, móveis) exigem tombamento, plaqueta única, depreciação e controle. Inventário anual obrigatório, especialmente em trocas de gestão.</p>
+      <div class="info-box"><div class="badge">TOMBAMENTO</div><p>Cada bem com código único. Facilita rastreabilidade, seguro e manutenção programada.</p></div>
+    </div>
+  </div>
+
+  <!-- 4. Cadeia de suprimentos e sustentabilidade -->
+  <div id="supply" class="section-card">
+    <div class="section-header"><div class="heading-marker"></div><h2>4. Cadeia de suprimentos e sustentabilidade prática</h2></div>
+    <div class="section-content">
+      <p>Logística reversa: reinserir materiais na cadeia. Exigir embalagens retornáveis ou certificadas (FSC, madeira legal). Medir redução de resíduos (toneladas recicladas). Contratos com cooperativas de reciclagem fortalecem créditos socioambientais.</p>
+      <ul><li>Critérios ESG na seleção de fornecedores</li><li>Combustíveis renováveis, frota econômica</li><li>Metas de redução de CO₂ por tonelada transportada</li></ul>
+    </div>
+  </div>
+
+  <!-- 5. Previsão de demanda -->
+  <div id="demanda" class="section-card">
+    <div class="section-header"><div class="heading-marker"></div><h2>5. Previsão de demanda – base do planejamento</h2></div>
+    <div class="section-content">
+      <p>Métodos qualitativos (Delphi, opinião de vendas) e quantitativos (médias móveis, regressão). Envolva comercial, produção e finanças. Acurácia da previsão acima de 80% é meta recomendada.</p>
+    </div>
+  </div>
+
+  <!-- 6. Compras e negociação -->
+  <div id="compras" class="section-card">
+    <div class="section-header"><div class="heading-marker"></div><h2>6. Compras, negociação e parcerias</h2></div>
+    <div class="section-content">
+      <p>Compras estratégicas: relação ganha-ganha, comakership. Avalie fornecedores por qualidade, prazo, inovação e saúde financeira. Utilize matriz de decisão.</p>
+      <div class="info-box"><div class="badge">DICA ESTRATÉGICA</div><p>Negocie prazos, volume, garantia e estabeleça acordos de nível de serviço (SLA). Evite relacionamento adversarial.</p></div>
+    </div>
+  </div>
+
+  <!-- 7. Estoques e curva ABC -->
+  <div id="estoques" class="section-card">
+    <div class="section-header"><div class="heading-marker"></div><h2>7. Controle de estoques e curva ABC</h2></div>
+    <div class="section-content">
+      <p><strong>Curva ABC:</strong> 20% dos itens (classe A) representam ≈70% do valor investido. Gestão diária, pedidos frequentes, estoque mínimo rigoroso. Classe C: pedidos maiores, menor frequência de controle.</p>
+      <ul><li>Estoque mínimo (segurança): protege contra variação de demanda e atraso no ressuprimento.</li>
+      <li>Estoque máximo: limite físico e financeiro.</li>
+      <li>Ponto de pedido (PP) = (consumo médio diário × lead time) + estoque segurança.</li></ul>
+    </div>
+  </div>
+
+  <!-- 8. KPIs essenciais -->
+  <div id="kpis" class="section-card">
+    <div class="section-header"><div class="heading-marker"></div><h2>8. Indicadores de desempenho (KPIs) essenciais</h2></div>
+    <div class="section-content">
+      <div class="grid-cols-2">
+        <div class="info-box"><div class="badge">GIRO DE ESTOQUE</div><p>Custo do material consumido ÷ estoque médio. Quanto maior o giro, melhor o uso do capital. Meta setorial: mínimo 6 a 12 vezes/ano.</p></div>
+        <div class="info-box"><div class="badge">RUPTURA (FALTA)</div><p>Percentual de pedidos não atendidos por falta de item. Máximo tolerável: 2% para classe A, 5% para classe B.</p></div>
+        <div class="info-box"><div class="badge">ACURÁCIA DO INVENTÁRIO</div><p>(Físico / sistema) × 100. Meta >95% para classes A e B.</p></div>
+        <div class="info-box"><div class="badge">LEAD TIME DE REPOSIÇÃO</div><p>Tempo entre pedido e disponibilidade. Monitore desvios para ajustar estoques de segurança.</p></div>
+        <div class="info-box"><div class="badge">CUSTO DE ARMAZENAGEM</div><p>Como % do valor do estoque médio. Inclui aluguel, mão de obra, perdas, seguros. Ideal <10% ao ano.</p></div>
+        <div class="info-box"><div class="badge">TOMBAMENTO PATRIMONIAL</div><p>% de bens com plaqueta e localização atualizada. Meta: 100% auditável semestralmente.</p></div>
+      </div>
+      <p>O que não é medido não é gerenciado. Defina metas semanais/mensais e revise com a equipe.</p>
+    </div>
+  </div>
+
+  <!-- 9. Ferramentas práticas: LEC e ponto de pedido -->
+  <div id="ferramentas" class="section-card">
+    <div class="section-header"><div class="heading-marker"></div><h2>9. Ferramentas práticas: Lote Econômico e Ponto de Pedido</h2></div>
+    <div class="section-content">
+      <h3>Lote Econômico (LEC)</h3>
+      <p>LEC = √(2 × D × Cp / Ca)<br>D = demanda anual, Cp = custo do pedido, Ca = custo de armazenagem unitário anual.<br><strong>Exemplo:</strong> demanda anual 1200 und, Cp = R$50, Ca = R$2 → LEC = √(2×1200×50/2) ≈ 245 unidades por pedido.</p>
+      <h3>Ponto de Pedido (PP)</h3>
+      <p>PP = (consumo médio diário × lead time em dias) + estoque segurança.<br><strong>Exemplo:</strong> consumo 10 und/dia, lead time 15 dias, estoque segurança 30 und → PP = 10×15 + 30 = 180 unidades. Ao atingir 180, disparar novo pedido.</p>
+    </div>
+  </div>
+
+  <!-- 10. Gestão de riscos e contingência -->
+  <div id="riscos" class="section-card">
+    <div class="section-header"><div class="heading-marker"></div><h2>10. Gestão de riscos e planos de contingência</h2></div>
+    <div class="section-content">
+      <ul><li><strong>Fornecedor único:</strong> identifique alternativas ou mantenha estoque segurança elevado (+50%).</li>
+      <li><strong>Riscos climáticos e greves:</strong> mapeie rotas alternativas, estoque pulverizado.</li>
+      <li><strong>Seguros:</strong> cargas, armazéns e bens patrimoniais devem estar cobertos.</li>
+      <li><strong>Plano de continuidade:</strong> simule falta de matéria-prima crítica e defina ação prévia.</li></ul>
+      <div class="info-box"><div class="badge">MATRIZ DE RISCO</div><p>Avalie probabilidade × impacto. Para cada material classe A, tenha no mínimo um fornecedor alternativo cadastrado.</p></div>
+    </div>
+  </div>
+
+  <!-- 11. Liderança e pessoas -->
+  <div id="pessoas" class="section-card">
+    <div class="section-header"><div class="heading-marker"></div><h2>11. Liderança e gestão de pessoas na área de materiais</h2></div>
+    <div class="section-content">
+      <p><strong>Treinamento contínuo:</strong> almoxarifes, compradores e auxiliares devem dominar recebimento, armazenagem e inventário.</p>
+      <ul><li>Inventário rotativo semanal por família de itens, com participação da equipe.</li>
+      <li>Indicadores individuais: acurácia por operador, redução de perdas, pontualidade de pedidos.</li>
+      <li>Reconhecimento e bônus por metas de ruptura ou giro.</li>
+      <li>Comunicação com requisitantes: evite compras emergenciais, estabeleça dias de entrega e prazo mínimo para requisições.</li></ul>
+    </div>
+  </div>
+
+  <!-- 12. Integração com outras áreas -->
+  <div id="integração" class="section-card">
+    <div class="section-header"><div class="heading-marker"></div><h2>12. Integração com finanças, vendas e PCP</h2></div>
+    <div class="section-content">
+      <ul><li><strong>Financeiro:</strong> negocie investimento em estoque (capital de giro) vs. nível de serviço. Mostre trade-off.</li>
+      <li><strong>Vendas:</strong> reuniões S&OP (Sales & Operations Planning) mensais para alinhar previsão de demanda e capacidade.</li>
+      <li><strong>PCP:</strong> sincronize lotes de produção com almoxarifado para evitar excesso de material em processo.</li></ul>
+      <div class="info-box"><div class="badge">RESULTADO</div><p>Reuniões semanais de planejamento de materiais com PCP e compras reduzem ruptura em até 40%.</p></div>
+    </div>
+  </div>
+
+  <!-- 13. Tecnologia aplicada -->
+  <div id="tecnologia" class="section-card">
+    <div class="section-header"><div class="heading-marker"></div><h2>13. Tecnologia que facilita a gestão</h2></div>
+    <div class="section-content">
+      <ul><li><strong>Código de barras / leitura óptica:</strong> redução drástica de erros no recebimento e expedição.</li>
+      <li><strong>RFID:</strong> para itens de alto valor ou controle de ativos móveis.</li>
+      <li><strong>WMS (Warehouse Management System):</strong> sugere endereçamento, otimiza rota de separação.</li>
+      <li><strong>Dashboard (Power BI / Excel):</strong> acompanhe giro, ruptura e acurácia em tempo real.</li>
+      <li><strong>ERP integrado:</strong> compras → estoque → financeiro → fiscal.</li></ul>
+    </div>
+  </div>
+
+  <!-- 14. Roteiro dos primeiros 100 dias -->
+  <div id="primeiros100" class="section-card">
+    <div class="section-header"><div class="heading-marker"></div><h2>14. Primeiros 100 dias do gestor de materiais</h2></div>
+    <div class="section-content">
+      <ol style="list-style-type: none; padding-left: 0;">
+        <li><strong>Dia 1–15:</strong> Conheça equipe, fornecedores críticos, faça inventário surpresa de classe A.</li>
+        <li><strong>Dia 16–30:</strong> Classifique ABC, recalcule pontos de pedido e estoques de segurança.</li>
+        <li><strong>Dia 31–60:</strong> Negocie com fornecedores top 10, implante um KPI (ex.: acurácia).</li>
+        <li><strong>Dia 61–90:</strong> Automatize um processo (código de barras no recebimento). Treine equipe.</li>
+        <li><strong>Dia 91–100:</strong> Apresente resultados, plano de melhoria contínua e metas para o próximo trimestre.</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- 15. Checklists práticos (sem oferecimento de envio) -->
+  <div id="checklist" class="section-card">
+    <div class="section-header"><div class="heading-marker"></div><h2>15. Checklists práticos para o dia a dia</h2></div>
+    <div class="section-content">
+      <h3>Recebimento de materiais</h3>
+      <ul><li>Conferência da nota fiscal com pedido de compra</li><li>Inspeção visual e quantitativa</li><li>Registro de não conformidades (avarias, atraso)</li><li>Liberação para almoxarifado e atualização de estoque</li></ul>
+      <h3>Armazenagem</h3>
+      <ul><li>Endereçamento definido (fixo ou rotativo) e sinalização clara</li><li>Produtos pesados nas prateleiras inferiores, maior saída próximo à expedição</li><li>Controle de temperatura/umidade quando necessário</li><li>Separação de itens obsoletos ou danificados</li></ul>
+      <h3>Inventário cíclico</h3>
+      <ul><li>Classe A: mensal</li><li>Classe B: trimestral</li><li>Classe C: semestral</li><li>Comparar físico x sistema, ajustar divergências e registrar causas</li></ul>
+      <h3>Desfazimento de bens patrimoniais</h3>
+      <ul><li>Autorização superior, baixa contábil, leilão ou descarte ambiental correto</li><li>Registro do termo de responsabilidade e baixa no sistema patrimonial</li></ul>
+    </div>
+  </div>
+
+  <!-- 16. Transporte -->
+  <div class="section-card">
+    <div class="section-header"><div class="heading-marker"></div><h2>16. Transporte e distribuição física</h2></div>
+    <div class="section-content">
+      <p>Modalidades: rodoviário (flexível), ferroviário (carga pesada), marítimo (comércio exterior), aéreo (urgência), intermodal (combinação). Critérios de escolha: custo total, prazo, confiabilidade, rastreabilidade e impacto ambiental. O transporte é o último contato com o cliente – gerencie a experiência.</p>
+    </div>
+  </div>
+
+  <!-- 17. Setor público (atualizado com a nova lei) -->
+  <div id="publico" class="section-card">
+    <div class="section-header"><div class="heading-marker"></div><h2>17. Especificidades da gestão pública</h2></div>
+    <div class="section-content">
+      <p>A Administração Pública segue a <strong>Lei 14.133/2021 (Nova Lei de Licitações e Contratos)</strong>, que substituiu gradualmente a antiga Lei 8.666/93 e o RDC (Lei 12.462/2011). As principais modalidades são: <strong>pregão</strong> (bens e serviços comuns), <strong>concorrência</strong> (obras e serviços especiais), <strong>diálogo competitivo</strong>, <strong>leilão</strong> e <strong>concurso</strong>. O princípio da isonomia e a busca pela proposta mais vantajosa permanecem, agora com ênfase em sustentabilidade, desenvolvimento nacional e menor custo efetivo.</p>
+      <p>Para aquisição de bens patrimoniais e materiais, o gestor público deve observar: planejamento anual de compras, catálogo eletrônico, dispensa e inexigibilidade nos casos legais, além da obrigatoriedade de tombamento e inventário físico-financeiro anual.</p>
+      <div class="info-box"><div class="badge">ATUALIZAÇÃO LEGAL</div><p>A Nova Lei de Licitações (14.133/2021) já é obrigatória para a maioria dos entes. Recomenda-se consultar o órgão de controle interno para o período de transição.</p></div>
+    </div>
+  </div>
+
+  <!-- CONCLUSÃO EXECUTIVA -->
+  <div class="section-card">
+    <div class="section-header"><div class="heading-marker"></div><h2>Da teoria à gestão no dia a dia</h2></div>
+    <div class="section-content">
+      <p>Os 7 pilares do gestor de materiais: 1) Planejar demanda, 2) Negociar com fornecedores, 3) Controlar estoques com KPIs, 4) Armazenar com layout eficiente, 5) Liderar e engajar pessoas, 6) Integrar áreas, 7) Mitigar riscos.</p>
+      <p><strong>Próxima ação:</strong> escolha um indicador para melhorar nos próximos 30 dias (ex.: reduzir ruptura de classe A). Use o roteiro dos 100 dias e compartilhe os resultados com sua liderança.</p>
+    </div>
+  </div>
+
+  <!-- GLOSSÁRIO -->
+  <div id="glossario" class="section-card">
+    <div class="section-header"><div class="heading-marker"></div><h2>Glossário de termos, siglas e definições</h2></div>
+    <div class="section-content">
+      <div class="glossary-grid">
+        <div class="glossary-term"><strong>ARMP</strong><p>Administração de Recursos Materiais e Patrimoniais – conjunto de práticas para gerir materiais e bens permanentes.</p></div>
+        <div class="glossary-term"><strong>Curva ABC</strong><p>Classificação de itens conforme seu valor/importância: A (20% itens, 70% valor), B (intermediário), C (maioria dos itens, baixo valor).</p></div>
+        <div class="glossary-term"><strong>EDI</strong><p>Electronic Data Interchange – intercâmbio eletrônico de dados entre empresas, usado em pedidos e notas fiscais.</p></div>
+        <div class="glossary-term"><strong>ERP</strong><p>Enterprise Resource Planning – sistema integrado de gestão que abrange finanças, compras, estoques e mais.</p></div>
+        <div class="glossary-term"><strong>Estoque de segurança</strong><p>Quantidade extra mantida para cobrir incertezas na demanda ou no lead time de reposição.</p></div>
+        <div class="glossary-term"><strong>Just in time (JIT)</strong><p>Sistema produtivo que busca zero estoques, recebendo materiais exatamente no momento do uso.</p></div>
+        <div class="glossary-term"><strong>Kanban</strong><p>Sistema de controle visual (cartões) que puxa a produção conforme a demanda real.</p></div>
+        <div class="glossary-term"><strong>KPI</strong><p>Key Performance Indicator – indicador que mede o desempenho de um processo (ex.: giro, acurácia).</p></div>
+        <div class="glossary-term"><strong>Lead time</strong><p>Tempo decorrido entre o início e a conclusão de um processo (reposição, produção, entrega).</p></div>
+        <div class="glossary-term"><strong>LEC (Lote Econômico)</strong><p>Quantidade que minimiza o custo total de pedido e armazenagem: √(2×D×Cp/Ca).</p></div>
+        <div class="glossary-term"><strong>Logística reversa</strong><p>Processo de retorno de produtos, resíduos ou embalagens ao ciclo produtivo (reciclagem, reuso).</p></div>
+        <div class="glossary-term"><strong>PCP</strong><p>Planejamento e Controle da Produção – gerencia recursos, programação e sequenciamento da produção.</p></div>
+        <div class="glossary-term"><strong>PEPS / UEPS</strong><p>Métodos de avaliação de estoques: primeiro que entra, primeiro que sai (PEPS); último que entra, primeiro que sai (UEPS – não aceito fiscalmente no Brasil).</p></div>
+        <div class="glossary-term"><strong>PP (Ponto de Pedido)</strong><p>Nível de estoque que aciona uma nova compra: (consumo médio × lead time) + estoque segurança.</p></div>
+        <div class="glossary-term"><strong>RFID</strong><p>Identificação por radiofrequência – tecnologia de captura automática de dados de etiquetas eletrônicas.</p></div>
+        <div class="glossary-term"><strong>Ruptura de estoque</strong><p>Falta de material quando solicitado, gerando atrasos e insatisfação do cliente.</p></div>
+        <div class="glossary-term"><strong>S&OP (Sales and Operations Planning)</strong><p>Planejamento integrado entre vendas e operações para alinhar demanda e capacidade.</p></div>
+        <div class="glossary-term"><strong>Tombamento</strong><p>Ato de registrar um bem patrimonial com número único, plaqueta e informações de depreciação.</p></div>
+        <div class="glossary-term"><strong>VMI (Vendor Managed Inventory)</strong><p>Estoque gerenciado pelo fornecedor, que monitora os níveis e faz a reposição automaticamente.</p></div>
+        <div class="glossary-term"><strong>WMS (Warehouse Management System)</strong><p>Sistema de gerenciamento de armazém – controla endereçamento, movimentação e separação de cargas.</p></div>
+      </div>
+      <p style="margin-top: 1rem; font-size: 0.85rem; color: #4a627a;">Consulte sempre as definições para alinhar a comunicação da sua equipe e evitar ruídos operacionais.</p>
+    </div>
+  </div>
+</main>
+
+<button class="back-to-top" id="backToTopBtn" aria-label="Voltar ao topo">↑</button>
+
+<footer class="footer">
+  <div>© 2026 Silvanio Gois - Todos os direitos reservados</div>
+  <div style="margin-top: 0.5rem;">
+    <a href="https://www.silvaniogois.com.br/" target="_blank" rel="noopener noreferrer">Ir ao Site</a>
+  </div>
+</footer>
+
+<script>
+  const backBtn = document.getElementById('backToTopBtn');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 400) backBtn.classList.add('show');
+    else backBtn.classList.remove('show');
+  });
+  backBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+</script>
+</body>
+</html>
